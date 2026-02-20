@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silo Kusuma | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        comic: { blue: '#0055ff', black: '#0a0a0a', white: '#ffffff' }
+                    },
+                    fontFamily: {
+                        hero: ['Bangers', 'cursive'],
+                        mono: ['Space Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style id="main-styles">
+        body { background-color: #fff; color: #0a0a0a; transition: background 0.3s, color 0.3s; overflow-x: hidden; font-family: 'Space Mono', monospace; }
+        .dark body { background-color: #0a0a0a; color: #fff; }
+        
+        .comic-shadow { box-shadow: 8px 8px 0px #0055ff; border: 3px solid #0a0a0a; transition: all 0.2s; }
+        .dark .comic-shadow { box-shadow: 8px 8px 0px #ffffff; border: 3px solid #ffffff; }
+        .comic-shadow:hover { transform: translate(-2px, -2px); box-shadow: 12px 12px 0px #0a0a0a; }
+        .dark .comic-shadow:hover { box-shadow: 12px 12px 0px #0055ff; }
+
+        #loader {
+            position: fixed; inset: 0; background: #fff; z-index: 9999;
+            display: flex; justify-content: center; align-items: center; flex-direction: column;
+        }
+        .dark #loader { background: #0a0a0a; }
+        
+        .box-container { position: relative; width: 50px; height: 50px; }
+        .box {
+            width: 40px; height: 40px; background: #0055ff; border: 3px solid #000;
+            position: absolute; animation: loader-main 3s infinite ease-in-out;
+        }
+        .box-split { width: 20px; height: 20px; opacity: 0; }
+
+        @keyframes loader-main {
+            0% { transform: rotate(0deg) scale(1) translateY(0); opacity: 1; }
+            20% { transform: rotate(180deg) scale(1.2) translateY(-30px); }
+            40% { transform: rotate(360deg) scale(1) translateY(0); }
+            60% { transform: rotate(360deg) scale(1); opacity: 1; }
+            70% { transform: rotate(360deg) scale(0); opacity: 0; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .split-1, .split-2, .split-3 { 
+            background: #0055ff; border: 2px solid #000; position: absolute;
+            animation: split-anim 3s infinite ease-in-out;
+        }
+        @keyframes split-anim {
+            0%, 60% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1); opacity: 1; }
+            85% { transform: translate(var(--tx), var(--ty)) rotate(360deg); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        #anti-thief {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(200%);
+            background: #ff0055; color: white; padding: 15px 25px; border: 4px solid black;
+            font-family: 'Bangers'; font-size: 1.5rem; z-index: 10000; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #anti-thief.show { transform: translateX(-50%) translateY(0); }
+
+        .bg-dots { background-image: radial-gradient(#0055ff 0.5px, transparent 0.5px); background-size: 15px 15px; opacity: 0.1; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .animate-marquee { display: flex; animation: marquee 15s linear infinite; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="selection:bg-comic-blue selection:text-white">
+
+    <div id="loader">
+        <div class="box-container">
+            <div class="box"></div>
+            <div class="split-1" style="--tx: -40px; --ty: -40px; width:20px; height:20px;"></div>
+            <div class="split-2" style="--tx: 40px; --ty: -20px; width:20px; height:20px;"></div>
+            <div class="split-3" style="--tx: 0px; --ty: 50px; width:20px; height:20px;"></div>
+        </div>
+        <p class="font-hero text-2xl mt-8 animate-pulse">Loading resource.....</p>
+    </div>
+
+    <div id="anti-thief">Jangan copas ya!. hargain developer</div>
+
+    <div class="fixed inset-0 bg-dots -z-10"></div>
+
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b-4 border-black dark:border-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex gap-4 md:gap-8 font-bold text-xs md:text-base">
+                <a href="#about" class="hover:text-comic-blue">ABOUT</a>
+                <a href="#project" class="hover:text-comic-blue">PROJECT</a>
+                <a href="#blog" class="hover:text-comic-blue">BLOG</a>
+            </div>
+            <button onclick="toggleDarkMode()" class="comic-shadow bg-black text-white dark:bg-white dark:text-black px-3 py-1 text-sm font-bold uppercase">
+                Dark
+            </button>
+        </div>
+    </nav>
+
+    <section id="about" class="py-12 md:py-20 px-6 container mx-auto">
+        <div class="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div class="reveal w-full">
+                <span class="bg-comic-blue text-white px-2 py-1 font-bold tracking-tighter">EST. 2025</span>
+                <h1 class="text-5xl sm:text-7xl md:text-9xl font-hero leading-none my-4 uppercase italic break-words">
+                    Im <span class="text-comic-blue">Silo</span>
+                </h1>
+                <p class="text-base md:text-lg font-bold border-l-4 border-black dark:border-white pl-4">
+                    Hello my name Silo Kusuma, Im IT Anthusiast and Web Developer. I have a passion for creating websites and learning new technologies.
+                </p>
+            </div>
+            <div class="reveal relative w-full max-w-[400px] md:max-w-full">
+                <div class="comic-shadow aspect-square bg-gray-100 dark:bg-zinc-900 overflow-hidden flex items-center justify-center relative">
+                    <i class="fa-solid fa-bolt text-[6rem] md:text-[10rem] text-comic-blue/20 absolute animate-pulse"></i>
+                    <img src="profile.png" alt="Profile" class="w-full h-full object-cover relative z-10">
+                </div>
+                <div class="absolute -bottom-4 -left-4 bg-black text-white p-3 md:p-4 font-hero text-xl md:text-2xl rotate-3">Silo</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="project" class="py-20 bg-black text-white overflow-hidden">
+        <div class="animate-marquee whitespace-nowrap mb-12">
+            <h2 class="text-6xl md:text-8xl font-hero italic flex gap-8 opacity-100">
+                SELECTED MISSIONS ★ SELECTED MISSIONS ★ SELECTED MISSIONS ★ SELECTED MISSIONS ★ 
+            </h2>
+        </div>
+        
+        <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-8 lg:gap-12">
+            <div class="reveal bg-white text-black p-6 md:p-8 comic-shadow h-full flex flex-col">
+                <div class="h-48 md:h-64 bg-comic-blue/10 border-2 border-black mb-4 flex items-center justify-center font-hero text-4xl text-gray-300">
+                    <img src="postaja.png" alt="Postaja" class="w-full h-full object-cover relative z-10">
+                </div>
+                <h3 class="text-3xl md:text-4xl font-hero uppercase">PostAja</h3>
+                <p class="my-4 text-sm md:text-base font-bold opacity-70 flex-grow">A social media platform developed by Indonesian developers. Built with PHP, HTML, CSS, JS, SQLITE3</p>
+                <a href="#" class="inline-block border-2 border-black px-4 py-2 font-bold hover:bg-comic-blue hover:text-white transition-all text-center">VIEW CASE</a>
+            </div>
+            <div class="reveal bg-white text-black p-6 md:p-8 comic-shadow h-full flex flex-col" style="transition-delay: 0.1s;">
+                <div class="h-48 md:h-64 bg-comic-blue/10 border-2 border-black mb-4 flex items-center justify-center font-hero text-4xl text-gray-300">
+                    <img src="jejakwakilrakyat.png" alt="JejakWakilRakyat" class="w-full h-full object-cover relative z-10">
+                </div>
+                <h3 class="text-3xl md:text-4xl font-hero uppercase">Jejak wakil rakyat</h3>
+                <p class="my-4 text-sm md:text-base font-bold opacity-70 flex-grow">A platform for archiving state corruption cases. Built using the NextJS framework.</p>
+                <a href="https://jejakwakilrakyat-web.vercel.app/" class="inline-block border-2 border-black px-4 py-2 font-bold hover:bg-comic-blue hover:text-white transition-all text-center">VIEW CASE</a>
+            </div>
+            <div class="reveal bg-white text-black p-6 md:p-8 comic-shadow h-full flex flex-col" style="transition-delay: 0.1s;">
+                <h3 class="text-3xl md:text-4xl font-hero uppercase">Bio link</h3>
+                <p class="my-4 text-sm md:text-base font-bold opacity-70 flex-grow">A platform for my personal links and projects.</p>
+                <a href="https://silokusuma.edgeone.dev/" class="inline-block border-2 border-black px-4 py-2 font-bold hover:bg-comic-blue hover:text-white transition-all text-center">VIEW CASE</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="blog" class="py-20 px-6 container mx-auto">
+        <h2 class="text-5xl font-hero mb-12 italic underline decoration-comic-blue">Blog</h2>
+        <div class="grid md:grid-cols-2 gap-10">
+            <div class="reveal bg-white dark:bg-zinc-900 dark:text-white text-black p-6 comic-shadow">
+                <h3 class="text-3xl font-hero uppercase">Why is PHP hated?</h3>
+                <p class="my-4 text-sm font-bold opacity-70">PHP is often disliked because it grew without a clean design...</p>
+                <a href="#" class="inline-block border-2 border-black dark:border-white px-4 py-2 font-bold hover:bg-comic-blue hover:text-white transition-all">VIEW POST</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 px-6">
+        <div class="container mx-auto max-w-4xl bg-comic-blue p-8 md:p-16 comic-shadow relative overflow-hidden text-white">
+            <h2 class="text-6xl font-hero italic mb-6">READY?</h2>
+            <p class="text-xl font-bold mb-8">Need help building your website? Contact me now.</p>
+            <a id="encoded-contact" href="#" class="bg-black text-white px-8 py-4 font-hero text-2xl hover:bg-white hover:text-black transition-all inline-block">CONTACT ME</a>
+        </div>
+    </section>
+
+    <footer class="py-10 text-center border-t-4 border-black dark:border-white font-bold text-sm">
+        <p>2026 Silo Kusuma - All rights reserved.</p>
+    </footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.transition = '0.5s';
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 500);
+            }, 3000);
+        });
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        }
+        if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        document.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            const toast = document.getElementById('anti-thief');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        });
+
+        const contact = "NjI4MTIyMDEzNjYzMw==";
+        document.getElementById('encoded-contact').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'https://wa.me/' + atob(contact);
+        });
+    </script>
+</body>
+</html>
